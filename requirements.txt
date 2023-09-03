@@ -1,2 +1,3 @@
 git+https://github.com/PieMC-Dev/PieRakNet.git
 PyJWT
+NBT
