@@ -1,4 +1,4 @@
-from pieraknet.buffer import Buffer
+from bedrockproto.buffer import BedrockBuffer
 
 class BedrockPacket(Buffer):
     packet_id: int = None
