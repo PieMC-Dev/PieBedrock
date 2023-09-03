@@ -4,9 +4,12 @@ from bedrockproto.packets.packet import BedrockPacket
 # Packet ID: 0x01 (1)
 # Bound to: Server
 # Fields:
+#
 #  Protocol Version: Int (Big Endian).
+#
 #  Chain data: JSON array of JWT data.
 #      Contains the display name, UUID and XUID.
+#
 #  Skin data: JWT data
 
 class LoginPacket(BedrockPacket):
