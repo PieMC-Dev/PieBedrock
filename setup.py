@@ -17,7 +17,7 @@ setup(
     url='https://github.com/PieMC-Dev/PieBedrock',
     packages=find_packages(),
     install_requires=[
-        "git+https://github.com/PieMC-Dev/PieRakNet.git",
+        "PieRakNet>=1.0.6",
         "PyJWT",
         "NBT"
     ],
