@@ -1,4 +1,4 @@
-from bedrockproto.packets.packet import BedrockPacket
+from piebedrock.packets.packet import BedrockPacket
 
 # Packet name: Login
 # Packet ID: 0x01 (1)
@@ -17,4 +17,4 @@ class LoginPacket(BedrockPacket):
     packet_type = "login"
 
     def decode_payload(self):
-        pass # TODO
+        print(self.getvalue()) # TODO

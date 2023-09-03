@@ -1,4 +1,4 @@
-from bedrockproto.packets.packet import BedrockPacket
+from piebedrock.packets.packet import BedrockPacket
 
 # Packet name: Disconnect
 # Packet ID: 0x05

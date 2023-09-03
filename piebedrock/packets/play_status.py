@@ -1,4 +1,4 @@
-from bedrockproto.packets.packet import BedrockPacket
+from piebedrock.packets.packet import BedrockPacket
 
 # Packet name: Play Status
 # Packet ID: 0x02 (2)
@@ -44,5 +44,7 @@ class PlayStatusPacket(BedrockPacket):
     packet_id = 0x02
     packet_type = "play_status"
 
+    status: int = None
+
     def encode_payload(self):
-        pass # TODO
+        self.write_int_be(self.status)

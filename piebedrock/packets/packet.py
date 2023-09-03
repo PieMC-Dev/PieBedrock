@@ -1,4 +1,4 @@
-from bedrockproto.buffer import BedrockBuffer
+from piebedrock.buffer import BedrockBuffer
 
 class BedrockPacket(Buffer):
     packet_id: int = None
