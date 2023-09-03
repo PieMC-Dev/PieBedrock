@@ -8,7 +8,7 @@ def readme():
 
 setup(
     name='PieBedrock',
-    version='1.0.0',
+    version='1.0.2',
     author='lapismyt',
     author_email='PieMC.Developers@gmail.com',
     description='Minecraft: Bedrock Edition network protocol implementation, written in Python. Created for PieMC.',

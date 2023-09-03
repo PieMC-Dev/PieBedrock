@@ -1,6 +1,6 @@
 from pieraknet import Server as RakNetServer
 from pieraknet.packets.game_packet import GamePacket
-from pieraknet.connection import Connection
+from pieraknet.connection import Connection as RakNetConnection
 import logging
 import os
 import time
@@ -22,6 +22,7 @@ class BedrockServer:
         self.motd2 = "Server"
         self.players_online = 0
         self.max_players = 20
+        self.players = []
         self._gamemode_map = {
             "survival": ("Survival", 1),
             "creative": ("Creative", 2),
@@ -46,14 +47,14 @@ class BedrockServer:
     def set_gamemode(self, gamemode):
         gm = gamemode.lower()
         if (gm in self._gamemode_map.keys()):
-            self.gamemode = self._gamemode_map(gamemode)
+            self.gamemode = self._gamemode_map[gm]
         else:
             raise KeyError(f"Gamemode {str(gamemode)} not exists")
 
     def update_server_status(self):
         self.server_status = ";".join([
             self.edition,
-            self.motd,
+            self.motd1,
             str(self.protocol_version),
             self.version_name,
             str(self.players_online),
@@ -65,3 +66,17 @@ class BedrockServer:
             str(self.port),
             str(self.port_v6),
         ])
+
+    def on_new_incoming_connection(self, connection: RakNetConnection):
+        self.logger.info(f"New Incoming Connection: {str(connection.address)}")
+
+    def on_disconnect(self, connection: RakNetConnection):
+        self.logger.info(f"Disconnected: {str(connection.address)}")
+
+    def start(self):
+        self.running = True
+        self.raknet_server.start()
+
+if __name__ == "__main__":
+    server = BedrockServer()
+    server.start()
