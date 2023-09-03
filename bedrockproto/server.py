@@ -6,6 +6,5 @@ import os
 import time
 import random
 
-class MCBEServer:
-    def __init__(self, hostname, port):
-        pass
+class BedrockServer:
+    pass
