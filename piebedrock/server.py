@@ -40,7 +40,7 @@ class BedrockServer:
         self.port = piemc.config.BEDROCK_PORT
         self.port_v6 = 19133
         self.guid = random.randint(1, 99999999)
-        with open('pieuid.dat', 'r') as f:
+        with open('uid.pie', 'r') as f:
             pieuid = f.read().strip()
         self.uid = pieuid
         self.raknet_version = 11
