@@ -1,66 +1,48 @@
 from pieraknet import Server as RakNetServer
 from pieraknet.packets.game_packet import GamePacket
 from pieraknet.connection import Connection as RakNetConnection
-from piemc.handlers.logger import create_logger
-from pieraknet.packets.frame_set import Frame as RakNetFrame
-from piemc.meta.protocol_info import ProtocolInfo
-from piemc.handlers.lang import LangHandler
+from pieraknet.packets.frame_set import Frame
 
 import logging
 import os
 import time
 import random
-import os
-import random
-import threading
-import time
-import piemc.config
 
 class BedrockServer:
-    def __init__(self):
-        self.threads = []
-        self.lang = LangHandler.initialize_language()
-        self.logger = create_logger('PieBedrock')
+    def __init__(self, hostname="0.0.0.0", port=19132, logger=logging.getLogger("PieBedrock"), gamemode="survival", timeout=20):
+        self.logger = logger
         self.server_status = None
-        self.hostname = piemc.config.HOST
+        self.hostname = hostname
+        self.port = port
         self.edition = "MCPE"
         self.protocol_version = 594
         self.version_name = "1.20.12"
-        self.motd = piemc.config.MOTD
-        self.level = "Powered by PieMC"
-        self.players_online = 2  # 2 players online XD. Update (By andiri): YES :sunglasses:
-        self.max_players = piemc.config.MAX_PLAYERS
+        self.motd1 = "PieBedrock Server"
+        self.motd2 = "GitHub/@PieMC-Dev"
+        self.players_online = 0
+        self.max_players = 20
         self.gamemode_map = {
             "survival": ("Survival", 1),
             "creative": ("Creative", 2),
             "adventure": ("Adventure", 3)
         }
-        self.gamemode = self.gamemode_map.get(piemc.config.GAMEMODE.lower(), ("Survival", 0))
-        self.logger.info(self.lang['NOT_EXISTING_GAMEMODE']) if self.gamemode[1] == 0 else None
-        self.port = piemc.config.BEDROCK_PORT
-        self.port_v6 = 19133
+        self.gamemode = self.gamemode_map.get(gamemode, ("Survival", 0))
+        self.port_v6 = 19131
         self.guid = random.randint(1, 99999999)
-        with open('uid.pie', 'r') as f:
-            pieuid = f.read().strip()
-        self.uid = pieuid
+        self.uid = random.randint(1, 99999999)
         self.raknet_version = 11
-        self.timeout = 20
-        self.raknet_server = RakNetServer(self.hostname, self.port, create_logger('PieRakNet'))
+        self.timeout = timeout
+        self.raknet_server = RakNetServer(self.hostname, self.port, logging.getLogger("PieRakNet"))
         self.raknet_server.interface = self
         self.update_server_status()
         self.raknet_server.protocol_version = self.raknet_version
         self.raknet_server.timeout = self.timeout
         # self.raknet_server.magic = ''
-        self.raknet_thread = threading.Thread(target=self.raknet_server.start)
-        self.raknet_thread.daemon = True
-        self.threads.append(self.raknet_thread)
         self.running = False
-        self.logger.info(self.lang['SERVER_INITIALIZED'])
         self.start_time = int(time.time())
-        self.start()
         
     def get_time_ms(self):
-        return round(time.time() - self.start_time, 4)
+        return round(time.time() - self.start_time, 3)
 
     def update_server_status(self):
         self.server_status = ";".join([
@@ -81,7 +63,7 @@ class BedrockServer:
 
     def on_game_packet(self, packet: GamePacket, connection: RakNetConnection):
         packet.decode()
-        if packet.body[0] == ProtocolInfo.LOGIN:
+        if packet.body[0] == 0x01:
             self.logger.info(f"New Login Packet: {str(packet.body)}")
 
     def on_new_incoming_connection(self, connection: RakNetConnection):
@@ -90,18 +72,16 @@ class BedrockServer:
     def on_disconnect(self, connection: RakNetConnection):
         self.logger.info(f"{str(connection.address)} disconnected")
 
-    def on_unknown_packet(self, packet: RakNetFrame, connection: RakNetConnection):
+    def on_unknown_packet(self, packet: Frame, connection: RakNetConnection):
         self.logger.info(f"New Unknown Packet: {str(packet.body)}")
 
     def start(self):
         self.running = True
         self.raknet_thread.start()
-        self.logger.info(f"{self.lang['RUNNING']} ({self.get_time_ms()}s.)")
-        self.logger.info(f"{self.lang['PORT']}: {self.port}")
+        self.logger.info(f"Running on {hostname}:{str(self.port)} ({str(self.get_time_ms())}s).")
             
     def stop(self):
-        self.logger.info(self.lang['STOPPING_WAIT'])
+        self.logger.info("Stopping...")
         self.running = False
         self.raknet_server.stop()
-        self.raknet_thread.join()
-        self.logger.info(self.lang['STOP'])
+        self.logger.info("Stop")
