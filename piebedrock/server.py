@@ -10,6 +10,7 @@ import random
 
 class BedrockServer:
     def __init__(self, hostname="0.0.0.0", port=19132, logger=logging.getLogger("PieBedrock"), gamemode="survival", timeout=20):
+        self.initialized = False
         self.logger = logger
         self.server_status = None
         self.hostname = hostname
@@ -32,14 +33,16 @@ class BedrockServer:
         self.uid = random.randint(1, 99999999)
         self.raknet_version = 11
         self.timeout = timeout
+        self.running = False
+        self.start_time = int(time.time())
+
+    def raknet_init(self):
         self.raknet_server = RakNetServer(self.hostname, self.port, logging.getLogger("PieRakNet"))
         self.raknet_server.interface = self
         self.update_server_status()
         self.raknet_server.protocol_version = self.raknet_version
         self.raknet_server.timeout = self.timeout
-        # self.raknet_server.magic = ''
-        self.running = False
-        self.start_time = int(time.time())
+        self.initialized = True
         
     def get_time_ms(self):
         return round(time.time() - self.start_time, 3)
@@ -76,6 +79,8 @@ class BedrockServer:
         self.logger.info(f"New Unknown Packet: {str(packet.body)}")
 
     def start(self):
+        if not self.initialized:
+            self.raknet_init()
         self.running = True
         self.raknet_thread.start()
         self.logger.info(f"Running on {hostname}:{str(self.port)} ({str(self.get_time_ms())}s).")
