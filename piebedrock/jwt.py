@@ -2,7 +2,7 @@ import jwt
 
 class JWT:
     
-    def __init__(self, secret, algorithm="HS256"):
+    def __init__(self, secret, algorithm="ES384"):
         self.secret = secret
         self.algorithm = algorithm
 
