@@ -50,13 +50,13 @@ class BedrockServer:
     def update_server_status(self):
         self.server_status = ";".join([
             self.edition,
-            self.motd,
+            self.motd1,
             f"{self.protocol_version}",
             self.version_name,
             f"{self.players_online}",
             f"{self.max_players}",
             f"{self.uid}",
-            self.level,
+            self.motd2,
             self.gamemode[0],
             f"{self.gamemode[1]}",
             f"{self.port}",
@@ -83,7 +83,7 @@ class BedrockServer:
             self.raknet_init()
         self.running = True
         self.raknet_thread.start()
-        self.logger.info(f"Running on {hostname}:{str(self.port)} ({str(self.get_time_ms())}s).")
+        self.logger.info(f"Running on {self.hostname}:{str(self.port)} ({str(self.get_time_ms())}s).")
             
     def stop(self):
         self.logger.info("Stopping...")
