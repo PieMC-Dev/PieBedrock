@@ -82,7 +82,7 @@ class BedrockServer:
         if not self.initialized:
             self.raknet_init()
         self.running = True
-        self.raknet_thread.start()
+        self.raknet_server.start()
         self.logger.info(f"Running on {self.hostname}:{str(self.port)} ({str(self.get_time_ms())}s).")
             
     def stop(self):
