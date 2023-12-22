@@ -1,3 +1,4 @@
+import threading
 from pieraknet import Server as PieRakNet
 from pieraknet.packets.game_packet import GamePacket
 from pieraknet.connection import Connection as RakNetConnection
@@ -35,6 +36,7 @@ class BedrockServer:
         self.timeout = timeout
         self.running = False
         self.start_time = int(time.time())
+        self.pieraknet_thread = None
 
     def pieraknet_init(self):
         self.pieraknet = PieRakNet(self.hostname, self.port, logging.getLogger("PieRakNet"))
@@ -43,7 +45,12 @@ class BedrockServer:
         self.pieraknet.protocol_version = self.raknet_version
         self.pieraknet.timeout = self.timeout
         self.initialized = True
-        
+
+    def start_pieraknet_thread(self):
+        self.pieraknet_thread = threading.Thread(target=self.pieraknet.start)
+        self.pieraknet_thread.daemon = True
+        self.pieraknet_thread.start()
+
     def get_time_ms(self):
         return round(time.time() - self.start_time, 3)
 
@@ -81,12 +88,14 @@ class BedrockServer:
     def start(self):
         if not self.initialized:
             self.pieraknet_init()
+        self.start_pieraknet_thread()
         self.running = True
-        self.pieraknet.start()
         self.logger.info(f"Running on {self.hostname}:{str(self.port)} ({str(self.get_time_ms())}s).")
-            
+
     def stop(self):
         self.logger.info("Stopping...")
         self.running = False
-        self.pieraknet.stop()
+        if self.pieraknet_thread:
+            self.pieraknet.stop()
+            self.pieraknet_thread.join()
         self.logger.info("Stop")
