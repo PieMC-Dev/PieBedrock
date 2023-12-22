@@ -1,4 +1,4 @@
-from pieraknet import Server as RakNetServer
+from pieraknet import Server as PieRakNet
 from pieraknet.packets.game_packet import GamePacket
 from pieraknet.connection import Connection as RakNetConnection
 from pieraknet.packets.frame_set import Frame
@@ -36,12 +36,12 @@ class BedrockServer:
         self.running = False
         self.start_time = int(time.time())
 
-    def raknet_init(self):
-        self.raknet_server = RakNetServer(self.hostname, self.port, logging.getLogger("PieRakNet"))
-        self.raknet_server.interface = self
+    def pieraknet_init(self):
+        self.pieraknet = PieRakNet(self.hostname, self.port, logging.getLogger("PieRakNet"))
+        self.pieraknet.interface = self
         self.update_server_status()
-        self.raknet_server.protocol_version = self.raknet_version
-        self.raknet_server.timeout = self.timeout
+        self.pieraknet.protocol_version = self.raknet_version
+        self.pieraknet.timeout = self.timeout
         self.initialized = True
         
     def get_time_ms(self):
@@ -62,7 +62,7 @@ class BedrockServer:
             f"{self.port}",
             f"{self.port_v6}"
         ]) + ";"
-        self.raknet_server.name = self.server_status
+        self.pieraknet.name = self.server_status
 
     def on_game_packet(self, packet: GamePacket, connection: RakNetConnection):
         packet.decode()
@@ -80,13 +80,21 @@ class BedrockServer:
 
     def start(self):
         if not self.initialized:
-            self.raknet_init()
+            self.pieraknet_init()
         self.running = True
-        self.raknet_server.start()
+        self.pieraknet.start()
         self.logger.info(f"Running on {self.hostname}:{str(self.port)} ({str(self.get_time_ms())}s).")
             
     def stop(self):
         self.logger.info("Stopping...")
         self.running = False
-        self.raknet_server.stop()
+        self.pieraknet.stop()
         self.logger.info("Stop")
+
+if __name__ == '__main__':
+    server = BedrockServer()
+    try:
+        server.start()
+    except KeyboardInterrupt:
+        server.logger.info('Stopping...')
+        server.stop()
