@@ -90,11 +90,3 @@ class BedrockServer:
         self.running = False
         self.pieraknet.stop()
         self.logger.info("Stop")
-
-if __name__ == '__main__':
-    server = BedrockServer()
-    try:
-        server.start()
-    except KeyboardInterrupt:
-        server.logger.info('Stopping...')
-        server.stop()
