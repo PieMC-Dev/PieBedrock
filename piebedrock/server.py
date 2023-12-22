@@ -10,7 +10,7 @@ import time
 import random
 
 class BedrockServer:
-    def __init__(self, hostname="0.0.0.0", port=19132, logger=logging.getLogger("PieBedrock"), gamemode="survival", timeout=20):
+    def __init__(self, hostname="0.0.0.0", port=19132, logger=logging.getLogger("PieBedrock"), gamemode="survival", timeout=20, dev_mode=False):
         self.initialized = False
         self.logger = logger
         self.server_status = None
@@ -37,10 +37,13 @@ class BedrockServer:
         self.running = False
         self.start_time = int(time.time())
         self.pieraknet_thread = None
+        self.dev_mode = dev_mode
 
     def pieraknet_init(self):
-        self.pieraknet = PieRakNet(self.hostname, self.port, logging.getLogger("PieRakNet"))
-        self.pieraknet.interface = self
+        if self.dev_mode:
+            logging.getLogger("PierakNet").setLevel(logging.DEBUG)
+            logging.getLogger("PierakNet").addHandler(logging.StreamHandler())
+        self.pieraknet = PieRakNet(self.hostname, self.port, logging.getLogger("PierakNet"))
         self.update_server_status()
         self.pieraknet.protocol_version = self.raknet_version
         self.pieraknet.timeout = self.timeout
