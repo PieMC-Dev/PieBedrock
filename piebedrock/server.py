@@ -49,11 +49,6 @@ class BedrockServer:
         self.pieraknet.timeout = self.timeout
         self.initialized = True
 
-    def start_pieraknet_thread(self):
-        self.pieraknet_thread = threading.Thread(target=self.pieraknet.start)
-        self.pieraknet_thread.daemon = True
-        self.pieraknet_thread.start()
-
     def get_time_ms(self):
         return round(time.time() - self.start_time, 3)
 
@@ -91,9 +86,9 @@ class BedrockServer:
     def start(self):
         if not self.initialized:
             self.pieraknet_init()
-        self.start_pieraknet_thread()
         self.running = True
         self.logger.info(f"Running on {self.hostname}:{str(self.port)} ({str(self.get_time_ms())}s).")
+        self.pieraknet.start()
 
     def stop(self):
         self.logger.info("Stopping...")
