@@ -31,11 +31,12 @@ class BedrockServer:
         self.players_online = 0
         self.max_players = 20
         self.gamemode_map = {
-            "survival": ("Survival", 1),
-            "creative": ("Creative", 2),
-            "adventure": ("Adventure", 3)
+        "survival": 1,
+        "creative": 2,
+        "adventure": 3
         }
-        self.gamemode = self.gamemode_map.get(gamemode, ("Survival", 0))
+        self.gamemode = gamemode.lower().capitalize()
+        self.gamemodeId = self.gamemode_map.get(self.gamemode.lower(), None)
         self.port_v6 = 19131
         self.guid = random.randint(1, 99999999)
         self.uid = random.randint(1, 99999999)
@@ -65,8 +66,8 @@ class BedrockServer:
             f"{self.max_players}",
             f"{self.uid}",
             self.motd,
-            self.gamemode[0],
-            f"{self.gamemode[1]}",
+            self.gamemode.lower().capitalize(),
+            f"{self.gamemodeId}",
             f"{self.port}",
             f"{self.port_v6}"
         ]) + ";"
