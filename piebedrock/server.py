@@ -10,7 +10,14 @@ import time
 import random
 
 class BedrockServer:
-    def __init__(self, hostname="0.0.0.0", port=19132, logger=logging.getLogger("PieBedrock"), gamemode="survival", timeout=20, dev_mode=False):
+    def __init__(self, hostname="0.0.0.0", port=19132, logger=None, gamemode="survival", timeout=20, logginglevel="DEBUG", dev_mode=False):
+        if logger is None:
+            logger = logging.getLogger("PieBedrock")
+            logger.setLevel(getattr(logging, logginglevel.upper()))
+            formatter = logging.Formatter('%(asctime)s [%(name)s - %(levelname)s] - %(message)s', "%H:%M:%S")
+            handler = logging.StreamHandler()
+            handler.setFormatter(formatter)
+            logger.addHandler(handler)
         self.initialized = False
         self.logger = logger
         self.server_status = None
