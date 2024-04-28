@@ -1,5 +1,5 @@
 import threading
-from pieraknet import Server as PieRakNet
+from pieraknet.server import Server as PieRakNet
 from pieraknet.packets.game_packet import GamePacket
 from pieraknet.connection import Connection as RakNetConnection
 from pieraknet.packets.frame_set import Frame
@@ -19,8 +19,8 @@ class BedrockServer:
         self.edition = "MCPE"
         self.protocol_version = 594
         self.version_name = "1.20.12"
-        self.motd1 = "PieBedrock Server"
-        self.motd2 = "GitHub/@PieMC-Dev"
+        self.name = "PieBedrock Server"
+        self.motd = "GitHub/@PieMC-Dev"
         self.players_online = 0
         self.max_players = 20
         self.gamemode_map = {
@@ -40,12 +40,8 @@ class BedrockServer:
         self.dev_mode = dev_mode
 
     def pieraknet_init(self):
-        if self.dev_mode:
-            logging.getLogger("PierakNet").setLevel(logging.DEBUG)
-            logging.getLogger("PierakNet").addHandler(logging.StreamHandler())
-        self.pieraknet = PieRakNet(self.hostname, self.port, logging.getLogger("PierakNet"))
         self.update_server_status()
-        self.pieraknet.protocol_version = self.raknet_version
+        self.pieraknet = PieRakNet(self.hostname, self.port, responseData=self.server_status)
         self.pieraknet.timeout = self.timeout
         self.initialized = True
 
@@ -55,19 +51,19 @@ class BedrockServer:
     def update_server_status(self):
         self.server_status = ";".join([
             self.edition,
-            self.motd1,
+            self.name,
             f"{self.protocol_version}",
             self.version_name,
             f"{self.players_online}",
             f"{self.max_players}",
             f"{self.uid}",
-            self.motd2,
+            self.motd,
             self.gamemode[0],
             f"{self.gamemode[1]}",
             f"{self.port}",
             f"{self.port_v6}"
         ]) + ";"
-        self.pieraknet.name = self.server_status
+        self.server_status
 
     def on_game_packet(self, packet: GamePacket, connection: RakNetConnection):
         packet.decode()
