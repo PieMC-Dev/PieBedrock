@@ -18,8 +18,10 @@ class DisconnectPacket(BedrockPacket):
     PACKET_ID = 0x05
     PACKET_TYPE = "disconnect"
 
-    hide_disconnect_screen: bool = True
-    kick_message: str = ""
+    def __init__(self, hide_disconnect_screen: bool = True, kick_message: str = ""):
+        super().__init__()
+        self.hide_disconnect_screen = hide_disconnect_screen
+        self.kick_message = kick_message
 
     def encode_payload(self):
         self.write_bool(self.hide_disconnect_screen)
