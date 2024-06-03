@@ -17,5 +17,13 @@ class LoginPacket(BedrockPacket):
     PACKET_ID = 0x01
     PACKET_TYPE = "login"
 
+    def __init__(self):
+        super().__init__()
+        self.protocol_version = None,
+        self.chain_data = None,
+        self.skin_data = None
+
     def decode_payload(self):
-        print(self.getvalue()) # TODO
+        self.protocol_version = self.read_int()
+        self.chain_data = self.read_string()
+        self.skin_data = self.read_string()
