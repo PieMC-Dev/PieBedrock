@@ -1,7 +1,14 @@
 from piebedrock.packets.packet import BedrockPacket
+from typing import Union
 
 
-# TODO Packet documentation
+# Packet name: Server Client Handshake
+# Packet ID: 0x03 (3)
+# Bound to: Client
+# Fields:
+#
+#   JWT data: String.
+#       The JWT data to send to the server.
 
 class ServerClientHandshakePacket(BedrockPacket):
     PACKET_ID = 0x03
