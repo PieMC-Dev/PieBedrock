@@ -12,7 +12,7 @@ class BedrockPacket(BedrockBuffer):
         return self.read_byte()
 
     def encode(self):
-        self.encode_header(self.packet_id)
+        self.encode_header(self.PACKET_ID)
         if hasattr(self, "encode_payload"):
             self.encode_payload()
 
