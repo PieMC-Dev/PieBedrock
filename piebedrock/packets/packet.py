@@ -1,8 +1,8 @@
 from piebedrock.buffer import BedrockBuffer
 
 class BedrockPacket(BedrockBuffer):
-    packet_id: int = None
-    packet_type: str = None
+    PACKET_ID: int = None
+    PACKET_TYPE: str = None
 
     def encode_header(self, data):
         self.write_byte(data)

@@ -41,8 +41,8 @@ from piebedrock.packets.packet import BedrockPacket
 #       later to see if space opens up. Server Full"
 
 class PlayStatusPacket(BedrockPacket):
-    packet_id = 0x02
-    packet_type = "play_status"
+    PACKET_ID = 0x02
+    PACKET_TYPE = "play_status"
 
     status: int = None
 

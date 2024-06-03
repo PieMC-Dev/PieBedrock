@@ -14,8 +14,8 @@ from piebedrock.packets.packet import BedrockPacket
 #       An optional message to show when disconnected.
 
 class DisconnectPacket(BedrockPacket):
-    packet_id = 0x05
-    packet_type = "disconnect"
+    PACKET_ID = 0x05
+    PACKET_TYPE = "disconnect"
 
     hide_disconnect_screen: bool = True
     kick_message: str = ""
