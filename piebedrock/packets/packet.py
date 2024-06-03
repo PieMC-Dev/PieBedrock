@@ -7,7 +7,7 @@ class BedrockPacket(BedrockBuffer):
 
     def encode_header(self, data):
         self.write_byte(data)
-    
+
     def decode_header(self):
         return self.read_byte()
 
