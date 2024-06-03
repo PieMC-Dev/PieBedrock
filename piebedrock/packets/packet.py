@@ -1,5 +1,6 @@
 from piebedrock.buffer import BedrockBuffer
 
+
 class BedrockPacket(BedrockBuffer):
     PACKET_ID: int = None
     PACKET_TYPE: str = None

@@ -1,5 +1,6 @@
 from piebedrock.packets.packet import BedrockPacket
 
+
 # Packet name: Login
 # Packet ID: 0x01 (1)
 # Bound to: Server

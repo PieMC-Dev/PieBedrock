@@ -1,5 +1,6 @@
 from piebedrock.packets.packet import BedrockPacket
 
+
 # Packet name: Disconnect
 # Packet ID: 0x05
 # Bound to: Client

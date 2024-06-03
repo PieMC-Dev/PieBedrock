@@ -1,5 +1,6 @@
 from piebedrock.packets.packet import BedrockPacket
 
+
 # TODO Packet documentation
 
 class ServerClientHandshakePacket(BedrockPacket):
