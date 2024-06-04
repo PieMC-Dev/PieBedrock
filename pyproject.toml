@@ -4,19 +4,19 @@ requires = ["setuptools"]
 [project]
 name = "PieBedrock"
 version = "1.0.4.1"
-readme = {"file": "README.md"}
+readme = {"file" = "README.md"}
 authors = [
-  {"name": "LapisMYT"},
-  {"name": "andiricum2"},
-  {"name": "SixpennyYard"},
-  {"name": "UCYT5040"}
+  {"name" = "LapisMYT"},
+  {"name" = "andiricum2"},
+  {"name" = "SixpennyYard"},
+  {"name" = "UCYT5040"}
 ]
 dependencies = [
   "PieRakNet>=1.0.6",
   "PyJWT",
   "NBT"
 ]
-license = {"file": "LICENSE"}
+license = {"file" = "LICENSE"}
 classifiers = [
     "Development Status :: 3 - Alpha",
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
