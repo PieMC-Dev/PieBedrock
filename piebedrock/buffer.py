@@ -13,10 +13,10 @@ from pieraknet.buffer import Buffer
 class BedrockBuffer(Buffer):
     def read_int_be(self):
         data = self.read(4)
-        return struct.unpack('>i', data)[0]
+        return struct.unpack('!i', data)[0]
 
     def write_int_be(self, data):
-        packed_data = struct.pack('>i', data)
+        packed_data = struct.pack('!i', data)
         self.write(packed_data)
 
     def read_int(self):
