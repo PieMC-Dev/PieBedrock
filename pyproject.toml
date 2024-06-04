@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools"]
+
+[project]
+name = "PieBedrock"
+version = "1.0.5"
+readme = {"file": "README.md"}
+authors = [
+  {"name": "LapisMYT"},
+  {"name": "andiricum2"},
+  {"name": "SixpennyYard"},
+  {"name": "UCYT5040"}
+]
+dependencies = [
+  "PieRakNet>=1.0.6",
+  "PyJWT",
+  "NBT"
+]
+license = {"file": "LICENSE"}
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Internet",
+    "Topic :: Games/Entertainment",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Networking"
+]
+keywords = ["python", "python3", "raknet", "rak-net", "mcpe", "bedrock", "rak_net", "piemc", "pieraknet", "piebedrock", "bedrock-protocol", "mineceaft-bedrock", "network", "protocol"]
