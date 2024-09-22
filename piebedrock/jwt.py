@@ -11,5 +11,5 @@ class JWT:
         return token
 
     def decode(self, token):
-        payload = jwt.decode(token, self.secret, algorithms=[self.algorithm])
+        payload = jwt.decode(token, self.secret, algorithms=self.algorithm)
         return payload

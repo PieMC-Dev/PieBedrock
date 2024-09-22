@@ -12,7 +12,7 @@ authors = [
   {"name" = "UCYT5040"}
 ]
 dependencies = [
-  "PieRakNet>=1.0.6",
+  "PieRakNet>=2.1",
   "PyJWT",
   "NBT"
 ]

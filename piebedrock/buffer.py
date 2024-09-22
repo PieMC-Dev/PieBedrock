@@ -11,6 +11,10 @@ from pieraknet.buffer import Buffer
 # https://wiki.vg/Bedrock_Protocol
 
 class BedrockBuffer(Buffer):
+
+    def read_byte(self):
+        return struct.unpack('B', self.read(1))[0]
+
     def read_int_be(self):
         data = self.read(4)
         return struct.unpack('!i', data)[0]

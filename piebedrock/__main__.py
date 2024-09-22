@@ -1,9 +1,5 @@
-from .server import BedrockServer
+from piebedrock.server import BedrockServer
 
 if __name__ == '__main__':
     server = BedrockServer()
-    try:
-        server.start()
-    except KeyboardInterrupt:
-        server.logger.info('Stopping...')
-        server.stop()
+    server.main()
