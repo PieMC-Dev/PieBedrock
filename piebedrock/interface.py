@@ -26,16 +26,15 @@ class GameInterface:
                 
                 # Crear un paquete de configuración de red
                 networkSettingPacket = NetworkSettingsPacket()
-                networkSettingPacket.compression_threshold = 1
+                networkSettingPacket.compression_threshold = 0
                 networkSettingPacket.compression_method = 0
                 networkSettingPacket.client_throttle_enabled = False
                 networkSettingPacket.client_throttle_threshold = 0
                 networkSettingPacket.client_throttle_scalar = 0.0
                 networkSettingPacket.encode()  # Codificar el paquete
+                frame['body'] = networkSettingPacket.getvalue()
 
-                packet_to_send = networkSettingPacket.getvalue() 
-
-                self.create_frame_and_frame_set(connection, packet_to_send, flags=0x60)
+                self.create_frame_and_frame_set(connection, frame['body'], flags=0x64)
 
             elif version > self.server.raknet.game_protocol_version:
                 print(f"Client has a higher protocol version than the server. Please update the server.")
@@ -51,33 +50,22 @@ class GameInterface:
 
     def create_frame_and_frame_set(self, connection, body, flags=0x60):
 
-        frame_set_packet = FrameSetPacket()
-        frame_set_packet.create_frame(OnlinePongPacket, flags=0x64)
-
-        # Codificar y enviar directamente sin usar Buffer
-        connection.send_data(frame_set_packet.encode())
-    
         # Longitud del cuerpo en bytes
         length_in_bytes = len(body).to_bytes(1, byteorder='big')
 
         # Añadir los bytes \xfe\x06 al inicio del cuerpo
         prefixed_body = b'\xfe' + length_in_bytes + body
 
-        frame = RakNetFrame()
-        frame.body = prefixed_body
-        frame.flags = flags
+        # Crear el FrameSetPacket y asignar el número de secuencia
+        frame_set_packet = FrameSetPacket(self.server.raknet)
+        frame_set_packet.create_frame(prefixed_body, flags)
+
+        # Establecer el número de secuencia del servidor
+        frame_set_packet.set_sequence_number(connection.server_sequence_number)
 
         print(f"Frame Body: {prefixed_body}")
+        
+        # Codificar y enviar directamente sin usar Buffer
+        connection.send_data(frame_set_packet.encode())
 
-        # Crear un paquete de conjunto de tramas utilizando el frame
-        frame_set_packet = RakNetFrameSetPacket()
-        frame_set_packet.sequence_number = connection.client_sequence_number
-        frame_set_packet.frames.append(frame)
-
-        # Crear un buffer para empaquetar el frame set
-        buffer = Buffer()
-        frame_set_packet.encode(buffer)
-
-        # Enviar el frame set
-        connection.send_data(buffer.getvalue())
         print(f"FrameSet created and sent to {connection.address}")
