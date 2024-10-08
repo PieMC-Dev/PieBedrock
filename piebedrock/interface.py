@@ -34,7 +34,7 @@ class GameInterface:
                 networkSettingPacket.encode()  # Codificar el paquete
                 frame['body'] = networkSettingPacket.getvalue()
 
-                self.create_frame_and_frame_set(connection, frame['body'], flags=0x64)
+                self.create_frame_and_frame_set(connection, frame['body'], flags=0x60)
 
             elif version > self.server.raknet.game_protocol_version:
                 print(f"Client has a higher protocol version than the server. Please update the server.")
