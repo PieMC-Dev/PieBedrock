@@ -1,6 +1,7 @@
 from pieraknet.server import Server as RakNetServer
 from piebedrock.interface import GameInterface
 
+# I know, i have to update comments to english :)
 class BedrockServer:
     def __init__(self):
         self.raknet = RakNetServer()
@@ -16,6 +17,7 @@ class BedrockServer:
         self.raknet.interface = self.interface
         
         # Configurar IP y puerto si es que son propiedades
+        self.raknet.ipv = 4 # IPV 4 o IPV 6
         self.raknet.hostname = "0.0.0.0"  # Configuración de la IP
         self.raknet.port = 19132    # Configuración del puerto
 
